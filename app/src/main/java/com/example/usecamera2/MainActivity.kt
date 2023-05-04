@@ -2,6 +2,8 @@ package com.example.usecamera2
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -86,8 +88,10 @@ class MainActivity : AppCompatActivity() {
                 // picture has been saved into uri, use uri
                 Log.d(MA, "uri is $uri")
                 // convert uri to bitmap
-
+                val source: ImageDecoder.Source = ImageDecoder.createSource(contentResolver, uri)
+                val bitmap: Bitmap = ImageDecoder.decodeBitmap(source)
                 // place bitmap into imageview
+                imageView.setImageBitmap(bitmap)
             } else {
                 Log.e("MA", "failure to take picture")
             }
