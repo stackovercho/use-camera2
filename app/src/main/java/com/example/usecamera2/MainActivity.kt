@@ -1,6 +1,7 @@
 package com.example.usecamera2
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -64,6 +65,18 @@ class MainActivity : AppCompatActivity() {
         cameraLauncher.launch(uri)
     }
 
+    private fun sendEmail() {
+        val emailIntent = Intent(Intent.ACTION_SEND).apply {
+            val recipients = arrayOf("chostar@umd.edu")
+            type = "text/plain"
+            putExtra(Intent.EXTRA_SUBJECT, "Hi from Android")
+            putExtra(Intent.EXTRA_EMAIL, recipients)
+            putExtra(Intent.EXTRA_TEXT, "Hello")
+            putExtra(Intent.EXTRA_STREAM, uri)
+        }
+        startActivity(Intent.createChooser(emailIntent, "Pick one"))
+    }
+
     // inner class PermissionResults : ActivityResultCallback<Boolean> {
     //     override fun onActivityResult(result: Boolean?) {
     //         if (result != null && result == true) {
@@ -92,6 +105,8 @@ class MainActivity : AppCompatActivity() {
                 val bitmap: Bitmap = ImageDecoder.decodeBitmap(source)
                 // place bitmap into imageview
                 imageView.setImageBitmap(bitmap)
+                // send email
+                sendEmail()
             } else {
                 Log.e("MA", "failure to take picture")
             }
